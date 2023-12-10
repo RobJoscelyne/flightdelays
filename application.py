@@ -19,7 +19,7 @@ def index():
 def predict_datapoint():
     if request.method == 'GET':
         # For a GET request, pass an empty form or default values
-        return render_template('home.html', results=None, form=request.form)
+        return render_template('index.html', results=None, form=request.form)
     else:
         # Gathering data from form
         data = CustomData(
@@ -46,7 +46,7 @@ def predict_datapoint():
         else:
             result_to_display = results  # If results is a scalar, use it directly
         # Render prediction results
-        return render_template('home.html', results=result_to_display, form=request.form)
+        return render_template('index.html', results=result_to_display, form=request.form)
 
 # Running the app
 if __name__ == "__main__":
