@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flight Delay Prediction Tool</title>
+</head>
+<body>
+    <div>
+        <div>
+            <div>
+                <h1>Flight Delay Prediction Tool</h1>
+                <form action="{{ url_for('predict_datapoint')}}" method="post">
+                    <fieldset>
+
+                        <!-- Month -->
+                        <div>
+                            <label for="MONTH">Month</label>
+                            <select id="MONTH" name="MONTH" required>
+                                <option disabled value="">Select Month</option>
+                                {% for month_num, month_name in [('1', 'January'), ('2', 'February'), ('3', 'March'), ('4', 'April'), ('5', 'May'), ('6', 'June'), ('7', 'July'), ('8', 'August'), ('9', 'September'), ('10', 'October'), ('11', 'November'), ('12', 'December')] %}
+                                <option value="{{ month_num }}">{{ month_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Day of Week -->
+                        <div>
+                            <label for="DAY_OF_WEEK">Day of Week</label>
+                            <select id="DAY_OF_WEEK" name="DAY_OF_WEEK" required>
+                                <option disabled value="">Select Day of Week</option>
+                                {% for day_num, day_name in [('1', 'Sunday'), ('2', 'Monday'), ('3', 'Tuesday'), ('4', 'Wednesday'), ('5', 'Thursday'), ('6', 'Friday'), ('7', 'Saturday')] %}
+                                <option value="{{ day_num }}">{{ day_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Carrier -->
+                        <div>
+                            <label for="OP_UNIQUE_CARRIER">Airline Carrier</label>
+                            <select id="OP_UNIQUE_CARRIER" name="OP_UNIQUE_CARRIER" required>
+                                <option disabled value="">Select Carrier</option>
+                                {% for carrier_code, carrier_name in [('AA', 'Airline A'), ('OO', 'Airline B'), ('B6', 'Airline C'), ('9E', 'Airline D'), ('DL', 'Airline E'), ('YX', 'Airline F'), ('UA', 'Airline G')] %}
+                                <option value="{{ carrier_code }}">{{ carrier_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Origin Airport -->
+                        <div>
+                            <label for="ORIGIN">Origin Airport</label>
+                            <select id="ORIGIN" name="ORIGIN" required>
+                                <option disabled value="">Select Origin Airport</option>
+                                {% for airport_code in ['LGA', 'JFK'] %}
+                                <option value="{{ airport_code }}">{{ airport_code }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Destination Airport -->
+                        <div>
+                            <label for="DEST">Destination Airport</label>
+                            <select id="DEST" name="DEST" required>
+                                <option disabled value="">Select Destination Airport</option>
+                                {% for airport_code in ['ATL', 'LAX', 'ORD', 'DFW', 'PHX'] %}
+                                <option value="{{ airport_code }}">{{ airport_code }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Scheduled Departure Time -->
+                        <div>
+                            <label for="CRS_DEP_TIME">Scheduled Departure Time</label>
+                            <input type="text" id="CRS_DEP_TIME" name="CRS_DEP_TIME" value="{{ request.form.get('CRS_DEP_TIME', '') }}" pattern="^(?:[01][0-9]|2[0-3])[0-5][0-9]$" placeholder="HHMM (0000 to 2359)" required>
+                            <small>Enter time as HHMM (0000 to 2359).</small>
+                        </div>
+
+                        <button type="submit">Estimate Flight Delay</button>
+                    </fieldset>
+                </form>
+                {% if results %}
+                <h2>The prediction is: {{ results|int }} minutes</h2>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
